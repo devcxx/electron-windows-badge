@@ -3,9 +3,9 @@ module.exports = class BadgeGenerator {
   constructor(win, opts = {}) {
     const defaultStyle = {
       fontColor : 'white',
-      font : '24px arial',
+      font : '10px Microsoft Yahei',
       color : 'red',
-      fit : true,
+      fit : false,
       decimals : 0,
       radius: 8
     };
@@ -29,7 +29,7 @@ module.exports = class BadgeGenerator {
     img.displayStyle = style;
 
     style.color = style.color ? style.color : 'red';
-    style.font = style.font ? style.font : '18px arial';
+    style.font = style.font ? style.font : '10px Microsoft Yahei';
     style.fontColor = style.fontColor ? style.fontColor : 'white';
     style.fit = style.fit === undefined ? true : style.fit;
     style.decimals = style.decimals === undefined || isNaN(style.decimals) ? 0 : style.decimals;
@@ -48,6 +48,9 @@ module.exports = class BadgeGenerator {
       this.ctx.textBaseline = "middle";
       this.ctx.fillStyle = this.displayStyle.fontColor;
       number = this.number.toFixed(this.displayStyle.decimals);
+      if (number >= 100)
+        number = "99..";
+        
       fontSize = Number(/[0-9\.]+/.exec(this.ctx.font)[0]);
 
       if (!this.displayStyle.fit || isNaN(fontSize)) {
@@ -60,14 +63,14 @@ module.exports = class BadgeGenerator {
         this.ctx.setTransform(1,0,0,1,0,0);
       }
 
-      if (!this.displayStyle.fit || isNaN(fontSize)) {
-         this.ctx.fillText(number,radius,radius);
-      } else {
-         fontScale = Math.cos(Math.atan(fontSize/fontWidth)) * this.radius * 2 / fontWidth;
-         this.ctx.setTransform(fontScale,0,0,fontScale,this.radius,this.radius);
-         this.ctx.fillText(number,0,0);
-         this.ctx.setTransform(1,0,0,1,0,0);
-      }
+      // if (!this.displayStyle.fit || isNaN(fontSize)) {
+      //    this.ctx.fillText(number,radius,radius);
+      // } else {
+      //    fontScale = Math.cos(Math.atan(fontSize/fontWidth)) * this.radius * 2 / fontWidth;
+      //    this.ctx.setTransform(fontScale,0,0,fontScale,this.radius,this.radius);
+      //    this.ctx.fillText(number,0,0);
+      //    this.ctx.setTransform(1,0,0,1,0,0);
+      // }
       return this;
     }
 
